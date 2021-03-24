@@ -11,3 +11,7 @@ Si el archivo de configuración tiene el nombre `tasks.py` y el nombre de la apl
 ```bash
  celery -A beat.tasks worker --loglevel=info
 ```
+
+```bash
+celery -A beat.tasks beat --loglevel=info
+```
