@@ -1,7 +1,7 @@
 from celery import Celery
 from celery.schedules import crontab
 from pytz import timezone
-from datetime import datetime
+from apps.task.views import update_installations
 
 app = Celery('tasks', broker='redis://localhost:6379', backend='redis://localhost:6379')
 app.conf.update(
@@ -15,13 +15,9 @@ app.conf.update(
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    #sender.add_periodic_task(5.0, test.s('hello'), name='add every 10')
-
-    # Executes every Monday morning at 7:30 a.m.
-    sender.add_periodic_task( crontab(hour=15, minute=41,), test.s('Happy Mondays 0!'),)
+    sender.add_periodic_task( crontab(hour=16, minute=5,), get_installations.s())
 
 @app.task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 2})
-def test(arg):
-    print("\n\n\n\n")
-    raise Exception('--------> ERROR <-------------')
+def get_installations():
+    update_installations()
     
