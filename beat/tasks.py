@@ -1,35 +1,27 @@
 from celery import Celery
+from celery.schedules import crontab
 from pytz import timezone
-import logging
-
+from datetime import datetime
 
 app = Celery('tasks', broker='redis://localhost:6379', backend='redis://localhost:6379')
-
 app.conf.update(
     task_serializer='json',
-    #accept_content=['json'],  # Ignore other content
+    accept_content=['json'],  
     result_serializer='json',
     timezone=timezone("America/Guatemala"),
-    #enable_utc=True,
+    enable_utc=False,
 )
+
+
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    
-    # Calls test('hello') every 10 seconds.
-    #sender.add_periodic_task(10.0, test.s('hello 10 seconds'), name='add every 10')
-
-    # Calls test('world') every 30 seconds
-    #sender.add_periodic_task(30.0, test.s('hello 30 seconds'), expires=10)
-    sender.add_periodic_task(5.0, test.s('5 seconds'))
+    #sender.add_periodic_task(5.0, test.s('hello'), name='add every 10')
 
     # Executes every Monday morning at 7:30 a.m.
-    #sender.add_periodic_task(
-    #    crontab(hour=7, minute=30, day_of_week=1),
-    #    test.s('Happy Mondays!'),
-    #)
+    sender.add_periodic_task( crontab(hour=15, minute=41,), test.s('Happy Mondays 0!'),)
 
-@app.task
+@app.task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 2})
 def test(arg):
-    logging.info(arg)
-    print(arg)
-    return arg
+    print("\n\n\n\n")
+    raise Exception('--------> ERROR <-------------')
+    
