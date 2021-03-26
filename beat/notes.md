@@ -12,6 +12,8 @@ Si el archivo de configuración tiene el nombre `tasks.py` y el nombre de la apl
  celery -A beat.tasks worker --loglevel=info
 ```
 
+Iniciar beat nativo de celery
+
 ```bash
 celery -A beat.tasks beat --loglevel=info
 ```
