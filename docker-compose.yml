@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: contact_control
+    restart: always
+    env_file: .env
+    #command: python manage.py runserver 0.0.0.0:8000
+    image: contact_control
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+
+  redis:
+    container_name: redis_celery
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379

@@ -123,11 +123,11 @@ STATIC_URL = '/static/'
 
 
 #Django Celery
-CELERY_TIMEZONE = "America/Guatemala"
-CELERY_BROKER_URL = 'redis://localhost:6379'
-#: Only add pickle to this list if your broker is secured
-#: from unwanted access (see userguide/security.html)
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_TASK_SERIALIZER = 'json'
+#CELERY_TIMEZONE = "America/Guatemala"
+#CELERY_BROKER_URL = 'redis://localhost:6379'
+##: Only add pickle to this list if your broker is secured
+##: from unwanted access (see userguide/security.html)
+#CELERY_ACCEPT_CONTENT = ['json']
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+#CELERY_TASK_SERIALIZER = 'json'
 
