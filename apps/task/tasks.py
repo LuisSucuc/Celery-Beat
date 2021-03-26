@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from celery import shared_task
 
-from django.shortcuts import render
 
-# Create your views here.
-def update_installations():
+@shared_task
+def update_installations_shared():
     import requests
     req = requests.get('https://jsonplaceholder.typicode.com/todos')
     print(req)
     #print(req.text)
     print("Actualización finalizada con ÉXITO")
+
+
