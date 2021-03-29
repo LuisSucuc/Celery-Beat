@@ -6,7 +6,7 @@ from pytz import timezone
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'beat.settings')
 
-app = Celery('proj', broker='redis://localhost:6379', backend='redis://localhost:6379')
+app = Celery('proj', broker='redis://localhost:6379', backend='django-db')
 
 app.conf.update(
     task_serializer='json',
