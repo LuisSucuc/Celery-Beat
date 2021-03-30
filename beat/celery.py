@@ -6,7 +6,7 @@ from pytz import timezone
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'beat.settings')
 
-app = Celery('proj', broker='redis://localhost:6379', backend='django-db')
+app = Celery('proj', broker=os.getenv("REDIS", "redis://my_redis"), backend='django-db')
 
 app.conf.update(
     task_serializer='json',
@@ -21,7 +21,7 @@ app.conf.update(
 # the configuration object to child processes.
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
-app.config_from_object('django.conf:settings', namespace='CELERY')
+#app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()

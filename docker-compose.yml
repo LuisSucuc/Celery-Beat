@@ -3,19 +3,41 @@ version: "3.9"
 services:
   web:
     build: .
-    container_name: contact_control
+    container_name: django_celery
     restart: always
     env_file: .env
     #command: python manage.py runserver 0.0.0.0:8000
-    image: contact_control
+    image: django_celery
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "9000:8000"
+  celery_worker:
+    container_name: celery_worker
+    env_file: .env
+    restart: always
+    command: celery -A beat worker --loglevel=info
+    image: django_celery
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - web
+
+  celery_beat:
+    container_name: celery_beat
+    env_file: .env
+    restart: always
+    command: celery -A beat beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    image: django_celery
+    volumes:
+      - .:/code
+    depends_on:
+      - celery_worker
 
   redis:
-    container_name: redis_celery
-    image: redis
+    container_name: my_redis
+    image: redis:alpine
     restart: always
     ports:
-      - 6379:6379
+      - 127.0.0.1:1109:6379
